@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe "User creates a new job" do
+  let!(:company) { Fabricate(:company) }
   scenario "a user can create a new job" do
-    company = Company.create!(name: "ESPN")
     visit new_company_job_path(company)
 
     fill_in "job[title]", with: "Developer"
@@ -13,7 +13,7 @@ describe "User creates a new job" do
     click_button "Create"
 
     expect(current_path).to eq("/companies/#{company.id}/jobs/#{Job.last.id}")
-    expect(page).to have_content("ESPN")
+    expect(page).to have_content(company.name)
     expect(page).to have_content("Developer")
     expect(page).to have_content("80")
     expect(page).to have_content("Denver")
