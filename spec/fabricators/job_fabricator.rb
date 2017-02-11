@@ -3,4 +3,5 @@ Fabricator(:job) do
   level_of_interest { Faker::Number.number(1) }
   city "Death Star"
   company
+  category
 end
