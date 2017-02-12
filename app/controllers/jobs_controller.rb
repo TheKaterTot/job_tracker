@@ -21,6 +21,7 @@ class JobsController < ApplicationController
   end
 
   def show
+    @comment = Comment.new()
   end
 
   def edit
@@ -50,6 +51,6 @@ class JobsController < ApplicationController
   end
 
   def set_job
-    @job = Job.find(params[:id])
+    @job = @company.jobs.find(params[:id])
   end
 end

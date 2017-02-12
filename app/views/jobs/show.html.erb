@@ -14,3 +14,19 @@ Category: <%= @job.category.title %>
 
 <%= link_to "Delete", company_job_path(@company, @job), method: :delete %>
 Company: <%= link_to @job.company.name, company_path(@job.company) %>
+
+<h3>Add A Comment</h3>
+<%= form_for [@company, @job, @comment] do |f| %>
+  <%= f.label :content, "Your Comment Here" %><br>
+  <%= f.text_area :content %>
+  <%= f.submit %>
+<% end %>
+
+<h3>Comments</h3>
+<% @job.comments.order("created_at desc").each do |comment| %>
+  <p>
+    <%= comment.created_at.to_s(:long) %><br>
+
+    <%= comment.content %>
+  </p>
+  <% end %>

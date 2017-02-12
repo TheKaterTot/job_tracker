@@ -1,11 +1,10 @@
 require "rails_helper"
 
 feature "User updates a job" do
-  let!(:company) { Fabricate(:company) }
-  let!(:job) { Fabricate(:job, company_id: company.id) }
+  let!(:job) { Fabricate(:job) }
   context "with valid info" do
     scenario "they visit edit" do
-      visit edit_company_job_path(company, job)
+      visit edit_company_job_path(job.company, job)
 
       fill_in "job[title]", with: "Developer"
       fill_in "job[description]", with: "So fun!"
@@ -14,7 +13,7 @@ feature "User updates a job" do
 
       click_button "Update"
 
-      expect(current_path).to eq(company_job_path(company, job))
+      expect(current_path).to eq(company_job_path(job.company, job))
       expect(page).to have_content("Developer")
       expect(page).to have_content(80)
     end
@@ -22,7 +21,7 @@ feature "User updates a job" do
 
   context "with invalid info" do
     scenario "they see an error message" do
-      visit edit_company_job_path(company, job)
+      visit edit_company_job_path(job.company, job)
 
       fill_in "job[title]", with: ""
       fill_in "job[description]", with: ""
@@ -33,7 +32,7 @@ feature "User updates a job" do
       expect(page).to have_content("Title can't be blank")
       expect(page).to have_content("Level of interest can't be blank")
       expect(page).to have_content("City can't be blank")
-      expect(current_path).to eq(company_job_path(company, job))
+      expect(current_path).to eq(company_job_path(job.company, job))
     end
   end
 end
