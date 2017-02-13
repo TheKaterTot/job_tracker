@@ -3,7 +3,28 @@ class JobsController < ApplicationController
   before_action :set_job, only: [:edit, :update, :show, :destroy]
 
   def index
-    @jobs = @company.jobs
+    if params[:location]
+      @jobs = jobs.where(city: params[:location])
+    else
+      @jobs = jobs
+    end
+
+    # @jobs.order(sort_param)
+
+    if params[:sort]== "location"
+      @jobs = @jobs.order("city")
+    end
+
+    if params[:sort]== "interest"
+      @jobs = @jobs.order("level_of_interest")
+    end
+  end
+
+  def sort_param
+    {
+      "location" => :city,
+      "interest" => :level_of_interest
+    }.fetch(params[:sort], :created_at)
   end
 
   def new
@@ -47,10 +68,20 @@ class JobsController < ApplicationController
   end
 
   def set_company
-    @company = Company.find(params[:company_id])
+    if params[:company_id]
+      @company = Company.find(params[:company_id])
+    end
   end
 
   def set_job
-    @job = @company.jobs.find(params[:id])
+    @job = jobs.find(params[:id])
+  end
+
+  def jobs
+    if params[:company_id]
+      @company.jobs
+    else
+      Job.all
+    end
   end
 end

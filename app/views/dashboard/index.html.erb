@@ -1,0 +1,19 @@
+<h3>Level of Interest Stats</h3>
+<% @level_of_interest.each do |job| %>
+  <p>
+    You have <%= pluralize(job.count, "job") %> with
+    level of interest <%= job.level_of_interest %>.
+  </p>
+<% end %>
+
+<ul id="top-three-companies">
+  <% @top_three_companies.each do |company| %>
+    <li><%= company.name %> has an average of <%= company.average %></li>
+    <% end %>
+</ul>
+
+<ul id="jobs-by-location">
+  <% @job_locations.each do |location| %>
+  <li><%= pluralize(location.job_count, "job") %> in <%= link_to location.name, jobs_path(location: location.name) %></li>
+  <% end %>
+</ul>
